@@ -1,4 +1,5 @@
 good_items = {"diamond","gold","lapis","iron","emerald","silver","lead","bauxite","raw","uranium","obsidian","coal","redstone","nickel","torch","copper","tin","ore"}
+building_blocks = {"stone","granite","tuff","wood","log","andesite"}
 
 print("Checking for updated script..")
 paste_id = "http://pastebin.com/raw.php?i=ranQP0a1"
