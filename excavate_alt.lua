@@ -90,6 +90,26 @@ if (distance % 4 == 0) then
     holes = distance / 4
     for i=1,holes do
         mining = true
+        
+        -- check above your head for blocks
+        block_up = turtle.inspectUp()
+        if (block == "nil") then
+            turtle.digDown()
+            print("Selecting a building block")
+            for i = 1, 16 do
+                turtle.select(i)
+                local block = turtle.getItemDetail()
+                if (block) then
+                    local block_name = block["name"]
+                    if string_contains(block_name,building_blocks) then
+                        turtle.placeUp()
+                        break
+                    end
+                end
+            end
+            
+        end
+
         while mining do
             fuel_level = turtle.getFuelLevel()    
             if (mining_depth == 0) then
