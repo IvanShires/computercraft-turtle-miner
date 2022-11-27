@@ -159,14 +159,12 @@ if (distance % 4 == 0) then
         turtle.placeDown()
 
         -- Logic below moves to the next hole
-        turtle.digDown()
         turtle.dig()
         turtle.forward()
         turtle.dig()
         turtle.forward()
         turtle.dig()
         turtle.forward()
-        turtle.digDown()
     end
 
     -- Coming Home Function
