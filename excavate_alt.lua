@@ -126,10 +126,12 @@ end
 for i = 1, 16 do
     turtle.select(i)
     block_data = turtle.getItemDetail()
-    block_name = block_data["name"]
-    if string_contains(block_name,good_items) then
-        print("yay")
-    else
-        print("nope")
+    if (block) then
+        block_name = block_data["name"]
+        if string_contains(block_name,good_items) then
+            print("yay")
+        else
+            print("nope")
+        end
     end
   end
