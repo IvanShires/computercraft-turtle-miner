@@ -52,12 +52,12 @@ function turtle_UpInspect()
     if block then -- Block is detected by the Turtle
         local block_name = block_data["name"]
         if (string.find(block_name,"obsidian")) then
-            return "True"
+            return true
         else
-            return "False"
+            return false
         end
     else
-        return "True"
+        return true
     end
 end
 
@@ -71,85 +71,101 @@ function bedrock_check()
     if block then -- Block is detected by the Turtle
         local block_name = block_data["name"]
         if (string.find(block_name,"bedrock")) then
-            return "True"
+            return true
         else
-            return "False"
+            return false
         end
     else
-        return "False"
+        return false
     end
 end
-mining = "True"
-while mining == "True" do
-    fuel_level = turtle.getFuelLevel()
-    local depth_hole = 0
-    if (mining_depth == 0) then
-        if (fuel_level <= 300) then
-            print("Not enough fuel!")
-        end
-    end
 
-    if (bedrock_check() == "True") then -- We've hit bedrock, go back up...
-        while true do
-            if (turtle_UpInspect() == "False") then
-                mining = "False"
-                break
+args = {...}
+distance = args[1]
+
+if (distance % 4 == 0) then
+    mining = true
+    depth_hole = 0
+
+    holes = distance / 4
+    for i=1,holes do
+        while mining do
+            fuel_level = turtle.getFuelLevel()    
+            if (mining_depth == 0) then
+                if (fuel_level <= 300) then
+                    print("Not enough fuel!")
+                end
+            end
+
+            if bedrock_check() then -- We've hit bedrock, go back up...
+                while true do
+                    if not turtle_UpInspect() then
+                        mining = false
+                        break
+                    else
+                        turtle_asend()
+                    end
+                end
             else
-                turtle_asend()
+                for i=1,4 do -- checks all 4 sides of the Turtle
+                    check_block()
+                    turtle.turnRight()
+                end
+                turtle.digDown()
+                turtle.down()
+                depth_hole = depth_hole + 1
             end
         end
-    else
-        for i=1,4 do -- checks all 4 sides of the Turtle
-            check_block()
-            turtle.turnRight()
-        end
-        turtle.digDown()
-        turtle.down()
-        depth_hole = depth_hole + 1
-    end
     
-end
+        
+        -- selecting a building block
 
-if (mining_depth == 0) then
-    mining_depth = depth_hole
-    print("Mining Depth: "..mining_depth)
-end
-
-building_block_slot = 0
--- selecting a building block
-print("Selecting a building block")
-for i = 1, 16 do
-    turtle.select(i)
-    local block = turtle.getItemDetail()
-    if (block) then
-        local block_name = block["name"]
-        if string_contains(block_name,building_blocks) then
-            if building_block_slot == 0 then
-                building_block_slot = i
-                break
+        building_block_slot = 0
+        print("Selecting a building block")
+        for i = 1, 16 do
+            turtle.select(i)
+            local block = turtle.getItemDetail()
+            if (block) then
+                local block_name = block["name"]
+                if string_contains(block_name,building_blocks) then
+                    if building_block_slot == 0 then
+                        building_block_slot = i
+                        break
+                    end
+                end
             end
         end
-    end
-end
--- Inventory Check
-print("Dumping unneeded inventory")
-for i = 1, 16 do
-    if (i ~= building_block_slot) then
-        turtle.select(i)
-        local block = turtle.getItemDetail()
-        if (block) then
-            local block_name = block["name"]
-            if not string_contains(block_name,good_items) then
-                print("Dumping "..block_name)
-                turtle.dropDown()
+        -- Inventory Check
+        print("Dumping unneeded inventory")
+        for i = 1, 16 do
+            if (i ~= building_block_slot) then
+                turtle.select(i)
+                local block = turtle.getItemDetail()
+                if (block) then
+                    local block_name = block["name"]
+                    if not string_contains(block_name,good_items) then
+                        print("Dumping "..block_name)
+                        turtle.dropDown()
+                    end
+                end
             end
         end
+
+        -- Leave no trace
+        turtle.select(building_block_slot)
+        item_count = turtle.getItemCount()
+        item_drop_count = item_count - 1
+        turtle.dropDown(item_drop_count)
+        turtle.placeDown()
+
+        -- Logic below moves to the next hole
+        turtle.digDown()
+        turtle.dig()
+        turtle.forward()
+        turtle.dig()
+        turtle.forward()
+        turtle.dig()
+        turtle.forward()
+        turtle.digDown()
     end
 end
-
--- Leave no trace
-turtle.select(building_block_slot)
-item_count = turtle.getItemCount()
-item_drop_count = item_count - 1
-turtle.dropDown(item_drop_count)
-turtle.placeDown()
