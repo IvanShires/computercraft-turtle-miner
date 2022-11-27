@@ -168,4 +168,15 @@ if (distance % 4 == 0) then
         turtle.forward()
         turtle.digDown()
     end
+
+    -- Coming Home Function
+    distance_home = holes + (holes * 2) - 2
+    turtle.turnRight()
+    turtle_turnRight()
+    for i=1,distance_home do
+        turtle.forward()
+    end
+
+else
+    print("Value not divisible by 4!")
 end
