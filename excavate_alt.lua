@@ -169,7 +169,7 @@ if (distance % 4 == 0) then
     end
 
     -- Coming Home Function
-    distance_home = holes + (holes * 2) - 2
+    distance_home = holes + (holes * 2)
     turtle.turnRight()
     turtle.turnRight()
     for i=1,distance_home do
