@@ -17,30 +17,44 @@ if (Paste ~= contents) then
         os.reboot()
 end
 
+function ntfy_message(ore)
+    local response = http.post("https://ntfy.sh/ishires_smartMiner",os.getComputerID() .. "- Just mined a "..ore)
+end
+
 function check_block()
     local block, block_data = turtle.inspect()
     if block then -- Block is detected by the Turtle
         local block_name = block_data["name"]
         if (string.find(block_name,"diamond")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"iron")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"lapis")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"gold")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"tin")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"coal")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"coal")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"obsidian")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"redstone")) then
             turtle.dig()
+            ntfy_message(block_name)
         elseif (string.find(block_name,"ore")) then
             turtle.dig()
+            ntfy_message(block_name)
         end
     end
 end
