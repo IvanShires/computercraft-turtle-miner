@@ -67,7 +67,7 @@ function turtle_asend()
             turtle.dig()
             turtle.up()
         else
-            os.shutdown()
+            mining = False
         end
     else
         turtle.up()
@@ -90,7 +90,8 @@ function bedrock_check()
         turtle.down()
     end
 end
-while true do
+mining = True
+while mining == True do
     bedrock_check()
     for i=1,4 do -- checks all 4 sides of the Turtle
         check_block()
