@@ -1,4 +1,4 @@
-good_items = {"diamond","gold","lapis","iron","emerald","uranium","obsidian","coal","redstone","torch","copper","tin","ore"}
+good_items = {"diamond","gold","lapis","iron","emerald","silver","lead","bauxite","raw","uranium","obsidian","coal","redstone","nickel","torch","copper","tin","ore"}
 
 print("Checking for updated script..")
 paste_id = "http://pastebin.com/raw.php?i=ranQP0a1"
@@ -25,7 +25,7 @@ end
 
 function string_contains(string,good_items)
     for key,value in pairs(good_items) do
-        if string.match(value, string) then
+        if string.match(string, value) then
             return "True"
         end
     end
@@ -35,34 +35,8 @@ function check_block()
     local block, block_data = turtle.inspect()
     if block then -- Block is detected by the Turtle
         local block_name = block_data["name"]
-        if (string.find(block_name,"diamond")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"iron")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"lapis")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"gold")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"tin")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"coal")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"coal")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"obsidian")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"redstone")) then
-            turtle.dig()
-            ntfy_message(block_name)
-        elseif (string.find(block_name,"ore")) then
+        if string_contains(block_name,good_items) then
+            print(block_name.." in list of items to mine!")
             turtle.dig()
             ntfy_message(block_name)
         end
@@ -125,13 +99,14 @@ end
 -- Inventory Check
 for i = 1, 16 do
     turtle.select(i)
-    block_data = turtle.getItemDetail()
+    local block = turtle.getItemDetail()
     if (block) then
-        block_name = block_data["name"]
+        local block_name = block["name"]
         if string_contains(block_name,good_items) then
-            print("yay")
+            print(block_name.." in list of items to keep")
         else
-            print("nope")
+            print("Dumping "..block_name)
+            turtle.dropDown()
         end
     end
   end
