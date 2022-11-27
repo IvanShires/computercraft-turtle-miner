@@ -1,4 +1,5 @@
 good_items = {"diamond","gold","lapis","iron","emerald","silver","lead","bauxite","raw","uranium","obsidian","coal","redstone","nickel","torch","copper","tin","ore"}
+building_blocks = {"stone","granite","tuff","wood","log","andesite","cobble"}
 
 print("Checking for updated script..")
 paste_id = "http://pastebin.com/raw.php?i=ranQP0a1"
@@ -96,17 +97,42 @@ while mining == "True" do
     end
     
 end
--- Inventory Check
+
+building_block_slot = 0
+-- selecting a building block
+print("Selecting a building block")
 for i = 1, 16 do
     turtle.select(i)
     local block = turtle.getItemDetail()
     if (block) then
         local block_name = block["name"]
-        if string_contains(block_name,good_items) then
-            print(block_name.." in list of items to keep")
-        else
-            print("Dumping "..block_name)
-            turtle.dropDown()
+        if string_contains(block_name,building_blocks) then
+            if building_block_slot == 0 then
+                building_block_slot = i
+                break
+            end
         end
     end
-  end
+end
+-- Inventory Check
+print("Dumping unneeded inventory")
+for i = 1, 16 do
+    if (i ~= building_block_slot) then
+        turtle.select(i)
+        local block = turtle.getItemDetail()
+        if (block) then
+            local block_name = block["name"]
+            if not string_contains(block_name,good_items) then
+                print("Dumping "..block_name)
+                turtle.dropDown()
+            end
+        end
+    end
+end
+
+-- Leave no trace
+turtle.select(building_block_slot)
+item_count = turtle.getItemCount()
+item_drop_count = item_count - 1
+turtle.dropDown(item_drop_count)
+turtle.placeDown()
