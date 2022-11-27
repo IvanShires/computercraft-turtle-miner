@@ -10,6 +10,9 @@ pasteContent.close()
 file = fs.open("smartMiner","r")
 contents = file.readAll()
 file.close()
+
+mining_depth = 0
+
 if (Paste ~= contents) then
         print("Updating program...")
         shell.run("delete","smartMiner")
@@ -78,6 +81,14 @@ function bedrock_check()
 end
 mining = "True"
 while mining == "True" do
+    fuel_level = turtle.getFuelLevel()
+    local depth_hole = 0
+    if (mining_depth == 0) then
+        if (fuel_level <= 300) then
+            print("Not enough fuel!")
+        end
+    end
+
     if (bedrock_check() == "True") then -- We've hit bedrock, go back up...
         while true do
             if (turtle_UpInspect() == "False") then
@@ -94,8 +105,14 @@ while mining == "True" do
         end
         turtle.digDown()
         turtle.down()
+        depth_hole = depth_hole + 1
     end
     
+end
+
+if (mining_depth == 0) then
+    mining_depth = depth_hole
+    print("Mining Depth: "..mining_depth)
 end
 
 building_block_slot = 0
