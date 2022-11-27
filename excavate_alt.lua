@@ -18,7 +18,7 @@ if (Paste ~= contents) then
 end
 
 function ntfy_message(ore)
-    local response = http.post("https://ntfy.sh/ishires_smartMiner",os.getComputerID() .. "- Just mined a "..ore)
+    local response = http.post("https://ntfy.sh/ishires_smartMiner",os.getComputerID() .. " - Just mined a "..ore)
 end
 
 function check_block()
