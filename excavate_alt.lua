@@ -97,17 +97,42 @@ while mining == "True" do
     end
     
 end
--- Inventory Check
+
+building_block_slot = 0
+
 for i = 1, 16 do
     turtle.select(i)
     local block = turtle.getItemDetail()
     if (block) then
         local block_name = block["name"]
-        if string_contains(block_name,good_items) then
-            print(block_name.." in list of items to keep")
-        else
-            print("Dumping "..block_name)
-            turtle.dropDown()
+        if string_contains(block_name,building_blocks) then
+            if building_block_slot == "" then
+                building_block_slot = i
+                break
+            end
         end
     end
-  end
+end
+-- Inventory Check
+for i = 1, 16 do
+    if (i ~= building_block_slot) then
+        turtle.select(i)
+        local block = turtle.getItemDetail()
+        if (block) then
+            local block_name = block["name"]
+            if string_contains(block_name,good_items) then
+                print(block_name.." in list of items to keep")
+            else
+                print("Dumping "..block_name)
+                turtle.dropDown()
+            end
+        end
+    end
+end
+
+-- Leave no trace
+turtle.select(building_block_slot)
+item_count = turtle.getItemCount()
+item_drop_count = item_count - 1
+turtle.dropDown(item_drop_count)
+turtle.placeDown()
