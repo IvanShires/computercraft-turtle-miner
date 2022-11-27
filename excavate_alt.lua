@@ -84,11 +84,12 @@ args = {...}
 distance = args[1]
 
 if (distance % 4 == 0) then
-    mining = true
+    
     depth_hole = 0
 
     holes = distance / 4
     for i=1,holes do
+        mining = true
         while mining do
             fuel_level = turtle.getFuelLevel()    
             if (mining_depth == 0) then
